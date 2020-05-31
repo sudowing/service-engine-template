@@ -1,0 +1,17 @@
+// cp/paste this file and rename
+// YYYYMMDDHHMMSS_some_migration_name.js
+
+exports.up = function(knex) {
+    return knex.schema.raw(`
+    
+    
+    `);
+};
+
+exports.down = function(knex) {
+    return knex.schema.raw(`
+    
+    
+    
+    `);
+};

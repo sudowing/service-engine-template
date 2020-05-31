@@ -1,0 +1,15 @@
+{
+    "appShortName": "some-app-service",
+    "title": "Some App Service......",
+    "description": "Basic description of core resources.",
+    "termsOfService": "http://website.io/terms/",
+    "name": "Joe Wingard",
+    "email": "open-source@joewingard.com",
+    "url": "https://github.com/sudowing/service-engine-template",
+    "servers": [
+        "http://localhost:8082",
+        "https://alpha.com",
+        "https://bravo.com",
+        "https://charlie.com"
+    ]
+}
