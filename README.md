@@ -2,7 +2,7 @@
 
 #### Dockerized Service-Engine Service.
 
-#### This project implements the [`service-engine`](https://www.npmjs.com/package/service-engine) npm package to provide REST & GraphQL interfaces to Databases. Currently it only supports postgres -- but all database engines support by knex will soon be added.
+#### This project implements the [`service-engine`](https://www.npmjs.com/package/service-engine) npm package to provide REST & GraphQL interfaces to Databases. Currently it only supports postgres (and most sql -- create & update do not return records as expected just nulls) -- but all database engines support by knex will soon be added.
 
 ## Run by Docker
 
@@ -16,11 +16,11 @@ The app needs some secrets set in `.env` and some data in `metadata.json`. These
 ```
 docker run \
 	--rm -it \
-    --env-file ./.env \
-    -v $(pwd)/metadata.json:/home/service-engine/app/lib/metadata.json \
-    -v $(pwd)/migrations:/home/service-engine/app/migrations \
+	--env-file ./.env \
+	-v $(pwd)/metadata.json:/home/service-engine/app/lib/metadata.json \
+	-v $(pwd)/migrations:/home/service-engine/app/migrations \
 	--network mynetwork \
-	-p 8082:8082 \
+	-p 8888:8080 \
 	--name myservice \
 	sudowing/service-engine:latest
 ```
@@ -53,7 +53,7 @@ Also -- make sure the `medata.servers` first entry matches your host & port. Els
 
 ```
 docker run \
-    -p 8080:8080 \
-    -e API_URL='http://localhost:8082/openapi' \
-    swaggerapi/swagger-ui
+	-p 8080:8080 \
+	-e API_URL='http://localhost:8888/openapi' \
+	swaggerapi/swagger-ui
 ```
