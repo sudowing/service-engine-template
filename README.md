@@ -18,6 +18,7 @@ docker run \
 	--rm -it \
 	--env-file ./.env \
 	-v $(pwd)/metadata.json:/home/service-engine/app/lib/metadata.json \
+	-v $(pwd)/middleware.js:/home/service-engine/app/lib/middleware.js \
 	-v $(pwd)/migrations:/home/service-engine/app/migrations \
 	--network mynetwork \
 	-p 8888:8080 \
@@ -35,6 +36,8 @@ Knex is used for db migrations. Instead of exposing all the knex migration inter
 Simply copy/paste `migrations/knex.stub.template` to `migrations/YYYYMMDDHHMMSS_some_migration_name.js` and add the migration steps to the `exports.up` & `exports.down` functions (exactly as you would with knex).
 
 The migrations will be run on server start.
+
+** Migration support is not toggled via an ENV VAR `MIGRATIONS`. Will be enabled unless set to string of value `false`
 
 ## API Documentation
 
