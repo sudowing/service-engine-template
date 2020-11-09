@@ -4,6 +4,8 @@ This project is a containerized implementation of [**`service-engine`**](https:/
 
 This project currently supports PostgreSQL, MySQL and Sqlite3. Support for all other database dialects supported by [knex.js](http://knexjs.org) is planned.
 
+#  <a id="table-of-contents"></a>Table of Contents
+
 * [General Service Engine Template](general_service_engine_template)
 * [Application Configuration](application_configuration)
     * [Required](required)
@@ -53,7 +55,7 @@ docker run \
 	--name myservice \
 	sudowing/service-engine:latest
 ```
-The services should now be running:
+The services should now be running:  
 [Health Check Route](http://localhost:8080/healthz)
 
 ##### **NOTE 1:** Docker run `--network` flag is only needed if you want ton connect to DB service via Docker Network.
@@ -83,7 +85,9 @@ The OpenAPI UI is available via [Docker Container](https://hub.docker.com/r/swag
 docker run -p 8088:8080 -e API_URL='http://0.0.0.0:8080/openapi' swaggerapi/swagger-ui
 ```
 
-[http://localhost:8088](http://localhost:8088)
+The services should now be running:  
+[OpenAPI Web UI](http://localhost:8088)
+
 
 # <a id="static_html_documentation"></a> Static HTML Documentation
 
