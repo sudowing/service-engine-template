@@ -21,12 +21,13 @@ docker run \
 	-v $(pwd)/src/middleware.js:/app/lib/middleware.js \
 	-v $(pwd)/src/permissions.js:/app/lib/permissions.js \
 	-v $(pwd)/src/complex_resources.js:/app/lib/complex_resources.js \
-	-v $(pwd)/src/migrations:/app/migrations \
+	-v $(pwd)/migrations:/app/migrations \
 	--network mynetwork \
 	-p 8080:8080 \
 	-p 50051:50051 \
 	--name myservice \
 	sudowing/service-engine:latest
+	
 ```
 
 #### Docker Networking Notes:
