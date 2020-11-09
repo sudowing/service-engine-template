@@ -17,9 +17,9 @@ The app needs some secrets set in `.env` and some data in `metadata.json`. These
 docker run \
 	--rm -it \
 	--env-file ./.env \
-	-v $(pwd)/metadata.json:/home/service-engine/app/lib/metadata.json \
-	-v $(pwd)/middleware.js:/home/service-engine/app/lib/middleware.js \
-	-v $(pwd)/migrations:/home/service-engine/app/migrations \
+	-v $(pwd)/metadata.json:/app/lib/metadata.json \
+	-v $(pwd)/middleware.js:/app/lib/middleware.js \
+	-v $(pwd)/migrations:/app/migrations \
 	--network mynetwork \
 	-p 8888:8080 \
 	--name myservice \
