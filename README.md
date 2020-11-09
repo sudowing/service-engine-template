@@ -19,7 +19,6 @@ docker run \
 	--env-file ./.env \
 	-v $(pwd)/src/metadata.json:/app/lib/metadata.json \
 	-v $(pwd)/src/middleware.js:/app/lib/middleware.js \
-	-v $(pwd)/src/permissions.js:/app/lib/permissions.js \
 	-v $(pwd)/src/complex_resources.js:/app/lib/complex_resources.js \
 	-v $(pwd)/migrations:/app/migrations \
 	--network mynetwork \
@@ -27,7 +26,7 @@ docker run \
 	-p 50051:50051 \
 	--name myservice \
 	sudowing/service-engine:latest
-	
+
 ```
 
 #### Docker Networking Notes:
@@ -64,3 +63,38 @@ docker run \
 	-e API_URL='http://localhost:8888/openapi' \
 	swaggerapi/swagger-ui
 ```
+
+
+
+
+# OpenAPI UI
+
+The OpenAPI UI is available via [Docker Container](https://hub.docker.com/r/swaggerapi/swagger-ui/) and the command below will run that container and populate it with the `OpenAPI definition` generated from this server.
+
+```
+docker run -p 8088:8080 -e API_URL='http://0.0.0.0:8080/openapi' swaggerapi/swagger-ui
+```
+
+[http://localhost:8088](http://localhost:8088)
+
+# Static HTML Documentation
+
+You can also generate some awesome static HTML documentation using [Mermade/shins](https://github.com/Mermade/shins). Tip: I always use the `--inline` flag.
+
+```
+npx widdershins \
+ --search true \
+ --language_tabs 'javascript:JavaScript' 'javascript--nodejs:Node.JS' 'python:Python' 'go:Go' 'http:HTTP' 'ruby:Ruby' \
+ --summary http://0.0.0.0:8080/openapi \
+ -o docs/service.md
+```	
+
+##### **NOTE 1:** You will need node installed locally to use `npx`
+
+# Versioning
+
+[SemVer](http://semver.org/) is used for versioning. For the versions available, see the [tags on this repository](https://github.com/sudowing/service-engine-template/tags). 
+
+# License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
