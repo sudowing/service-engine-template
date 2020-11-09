@@ -1,0 +1,16 @@
+{
+    "appShortName": "some-app-service",
+    "title": "Some App Service",
+    "description": "Basic description of service resources.",
+    "termsOfService": "http://website.io/terms/",
+    "name": "Joe Wingard",
+    "email": "open-source@joewingard.com",
+    "url": "https://github.com/sudowing/service-engine",
+    "servers": [
+        "https://dev.domain.com",
+        "https://qa.domain.com",
+        "https://prod.domain.com",
+        "https://demo.domain.com"
+        "https://domain.com"
+    ]
+}
