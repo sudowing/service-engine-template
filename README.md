@@ -65,11 +65,12 @@ The services should now be running:
 # <a id="migrations"></a> Migrations
 
 Knex is used for db migrations. Instead of exposing all the knex migration interfaces, migrations are added by placing new migration files into the `migrations` directory.
+
 Simply copy/paste `migrations/knex.stub.template` to `migrations/YYYYMMDDHHMMSS_some_migration_name.js` and add the migration steps to the `exports.up` & `exports.down` functions (exactly as you would with knex).
 
 The migrations will be run on server start.
 
-** Migration support is not toggled via an ENV VAR `MIGRATIONS`. Will be enabled unless set to string of value `false`
+**NOTE 1:** Migration support is now toggled via an ENV VAR `MIGRATIONS`. Will be enabled unless set to string of value `false`
 
 # <a id="api_documentation"></a> API Documentation
 
