@@ -7,9 +7,10 @@
     "email": "open-source@joewingard.com",
     "url": "https://github.com/sudowing/service-engine",
     "servers": [
-        "https://alpha.com",
-        "https://bravo.com",
-        "https://charlie.com",
-        "https://delta.com"
+        "https://dev.domain.com",
+        "https://qa.domain.com",
+        "https://prod.domain.com",
+        "https://demo.domain.com"
+        "https://domain.com"
     ]
 }

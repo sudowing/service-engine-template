@@ -1,24 +1,39 @@
-# service-engine-template
+# General Service Engine Template
 
-#### Dockerized Service-Engine Service.
+This project is a containerized implementation of [**`service-engine`**](https://www.npmjs.com/package/service-engine). The goal is to provide a minimalist template that can be used to quickly bootstap services.
 
-#### This project implements the [`service-engine`](https://www.npmjs.com/package/service-engine) npm package to provide REST & GraphQL interfaces to Databases. Currently it only supports postgres (and most sql -- create & update do not return records as expected just nulls) -- but all database engines support by knex will soon be added.
-
-## Run by Docker
-
-### set secrets & metadata
-
-The app needs some secrets set in `.env` and some data in `metadata.json`. These get mounted into the container at runtime -- so simply update the files and run the docker command below.d
+This project currently supports PostgreSQL, MySQL and Sqlite3. Support for all other database dialects supported by [knex.js](http://knexjs.org) is planned.
 
 
-### Docker Run
+# Application Configuration
 
-```
+## Required
+
+### `.env`
+
+Mostly consists of DB Connection information, but also includes options for pagination limits, ports for `REST` & `gRPC` services & a flag indicated if you want to enable db migrations on startup.
+
+### `metadata.json`
+
+Most of this content is used to complete the OpenAPI docs. However, the **appShortName** is also used to define root URL path & is injected into all logs.
+
+## Optional
+
+The remaining files are all optional. Detailed descriptions of what each is for is documented on the **README** of the root project.
+
+- [`middleware.js`](https://github.com/sudowing/service-engine/blob/develop/README.md#application-configurations_middleware)
+- [`complex_resources.js`](https://github.com/sudowing/service-engine/blob/develop/README.md#application-configurations_complex-resources-subqueries)
+- [`permissions.js`](https://github.com/sudowing/service-engine/blob/develop/README.md#application-configurations_permissions)
+
+# Run by Docker
+
+```sh
 docker run \
 	--rm -it \
 	--env-file ./.env \
 	-v $(pwd)/src/metadata.json:/app/lib/metadata.json \
 	-v $(pwd)/src/middleware.js:/app/lib/middleware.js \
+	-v $(pwd)/src/permissions.js:/app/lib/permissions.js \
 	-v $(pwd)/src/complex_resources.js:/app/lib/complex_resources.js \
 	-v $(pwd)/migrations:/app/migrations \
 	--network mynetwork \
@@ -26,15 +41,14 @@ docker run \
 	-p 50051:50051 \
 	--name myservice \
 	sudowing/service-engine:latest
-
 ```
 
-#### Docker Networking Notes:
-DB_HOST should be ip, domain or docker container name. If container name ensure db and this service on same network.
-`--network` docker flag only needed if DB is run by docker as both need to be on same networks. If available outside docker -- you can omit.
+##### **NOTE 1:** Docker run `--network` flag is only needed if you want ton connect to DB service via Docker Network.
 
+##### **NOTE 2:** `DB_HOST` should be ip, domain or docker container name. If container name ensure db and this service on same network.
 
-## Migrations
+# Migrations
+
 Knex is used for db migrations. Instead of exposing all the knex migration interfaces, migrations are added by placing new migration files into the `migrations` directory.
 Simply copy/paste `migrations/knex.stub.template` to `migrations/YYYYMMDDHHMMSS_some_migration_name.js` and add the migration steps to the `exports.up` & `exports.down` functions (exactly as you would with knex).
 
@@ -42,30 +56,11 @@ The migrations will be run on server start.
 
 ** Migration support is not toggled via an ENV VAR `MIGRATIONS`. Will be enabled unless set to string of value `false`
 
-## API Documentation
+# API Documentation
 
-The service has a two sets of resources -- some static development resources to the framework (ping, openapi, etc) and others that are generated dynamically that are specific to the database.
+The service has a two sets of resources -- some [static development resources](https://github.com/sudowing/service-engine#rest-endpoints) and others that are generated dynamically that are specific to the database.
 
-I use the [`Insomnia API Client`](insomnia.rest) for develoment, and I've included an export of some general service calls to speed your development.
-
-Once you install insomnia, you can import [`docs/insomnia.service.json`](./docs/insomnia.service.json)
-
-
-### OpenAPI Docs
-
-This app auto generates OpenAPI docs that can be used with any OpenAPI client -- for example the OpenAPI UI -- which you can run locally via Docker (make sure the `port` in the `API_URL` matches what you defined in `.env`).
-
-Also -- make sure the `medata.servers` first entry matches your host & port. Else the client wont be able to execute any calls without an error.
-
-```
-docker run \
-	-p 8080:8080 \
-	-e API_URL='http://localhost:8888/openapi' \
-	swaggerapi/swagger-ui
-```
-
-
-
+I use the [`Insomnia API Client`](insomnia.rest) for develoment, and I've included an [insomnia export](./docs/insomnia.service.json) of some general service calls to speed your adoption.
 
 # OpenAPI UI
 
