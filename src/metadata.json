@@ -10,7 +10,7 @@
         "https://dev.domain.com",
         "https://qa.domain.com",
         "https://prod.domain.com",
-        "https://demo.domain.com"
+        "https://demo.domain.com",
         "https://domain.com"
     ]
 }

@@ -4,20 +4,31 @@ This project is a containerized implementation of [**`service-engine`**](https:/
 
 This project currently supports PostgreSQL, MySQL and Sqlite3. Support for all other database dialects supported by [knex.js](http://knexjs.org) is planned.
 
+* [General Service Engine Template](general_service_engine_template)
+* [Application Configuration](application_configuration)
+    * [Required](required)
+    * [Optional](optional)
+* [Run by Docker](run_by_docker)
+* [Migrations](migrations)
+* [API Documentation](api_documentation)
+* [OpenAPI UI](open_api_ui)
+* [Static HTML Documentation](static_html_documentation)
+* [Versioning](versioning)
+* [License](license)
 
-# Application Configuration
+# <a id="application_configuration"></a> Application Configuration
 
-## Required
+## <a id="required"></a> Required
 
-### `.env`
+### <a id="env"></a> `.env`
 
 Mostly consists of DB Connection information, but also includes options for pagination limits, ports for `REST` & `gRPC` services & a flag indicated if you want to enable db migrations on startup.
 
-### `metadata.json`
+### <a id="metadata_json"></a> `metadata.json`
 
 Most of this content is used to complete the OpenAPI docs. However, the **appShortName** is also used to define root URL path & is injected into all logs.
 
-## Optional
+## <a id="optional"></a> Optional
 
 The remaining files are all optional. Detailed descriptions of what each is for is documented on the **README** of the root project.
 
@@ -25,7 +36,7 @@ The remaining files are all optional. Detailed descriptions of what each is for 
 - [`complex_resources.js`](https://github.com/sudowing/service-engine/blob/develop/README.md#application-configurations_complex-resources-subqueries)
 - [`permissions.js`](https://github.com/sudowing/service-engine/blob/develop/README.md#application-configurations_permissions)
 
-# Run by Docker
+# <a id="run_by_docker"></a> Run by Docker
 
 ```sh
 docker run \
@@ -42,12 +53,14 @@ docker run \
 	--name myservice \
 	sudowing/service-engine:latest
 ```
+The services should now be running:
+[Health Check Route](http://localhost:8080/healthz)
 
 ##### **NOTE 1:** Docker run `--network` flag is only needed if you want ton connect to DB service via Docker Network.
 
 ##### **NOTE 2:** `DB_HOST` should be ip, domain or docker container name. If container name ensure db and this service on same network.
 
-# Migrations
+# <a id="migrations"></a> Migrations
 
 Knex is used for db migrations. Instead of exposing all the knex migration interfaces, migrations are added by placing new migration files into the `migrations` directory.
 Simply copy/paste `migrations/knex.stub.template` to `migrations/YYYYMMDDHHMMSS_some_migration_name.js` and add the migration steps to the `exports.up` & `exports.down` functions (exactly as you would with knex).
@@ -56,13 +69,13 @@ The migrations will be run on server start.
 
 ** Migration support is not toggled via an ENV VAR `MIGRATIONS`. Will be enabled unless set to string of value `false`
 
-# API Documentation
+# <a id="api_documentation"></a> API Documentation
 
 The service has a two sets of resources -- some [static development resources](https://github.com/sudowing/service-engine#rest-endpoints) and others that are generated dynamically that are specific to the database.
 
 I use the [`Insomnia API Client`](insomnia.rest) for develoment, and I've included an [insomnia export](./docs/insomnia.service.json) of some general service calls to speed your adoption.
 
-# OpenAPI UI
+# <a id="open_api_ui"></a> OpenAPI UI
 
 The OpenAPI UI is available via [Docker Container](https://hub.docker.com/r/swaggerapi/swagger-ui/) and the command below will run that container and populate it with the `OpenAPI definition` generated from this server.
 
@@ -72,7 +85,7 @@ docker run -p 8088:8080 -e API_URL='http://0.0.0.0:8080/openapi' swaggerapi/swag
 
 [http://localhost:8088](http://localhost:8088)
 
-# Static HTML Documentation
+# <a id="static_html_documentation"></a> Static HTML Documentation
 
 You can also generate some awesome static HTML documentation using [Mermade/shins](https://github.com/Mermade/shins). Tip: I always use the `--inline` flag.
 
@@ -86,10 +99,10 @@ npx widdershins \
 
 ##### **NOTE 1:** You will need node installed locally to use `npx`
 
-# Versioning
+# <a id="versioning"></a> Versioning
 
 [SemVer](http://semver.org/) is used for versioning. For the versions available, see the [tags on this repository](https://github.com/sudowing/service-engine-template/tags). 
 
-# License
+# <a id="license"></a> License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
