@@ -17,11 +17,14 @@ The app needs some secrets set in `.env` and some data in `metadata.json`. These
 docker run \
 	--rm -it \
 	--env-file ./.env \
-	-v $(pwd)/metadata.json:/app/lib/metadata.json \
-	-v $(pwd)/middleware.js:/app/lib/middleware.js \
-	-v $(pwd)/migrations:/app/migrations \
+	-v $(pwd)/src/metadata.json:/app/lib/metadata.json \
+	-v $(pwd)/src/middleware.js:/app/lib/middleware.js \
+	-v $(pwd)/src/permissions.js:/app/lib/permissions.js \
+	-v $(pwd)/src/complex_resources.js:/app/lib/complex_resources.js \
+	-v $(pwd)/src/migrations:/app/migrations \
 	--network mynetwork \
-	-p 8888:8080 \
+	-p 8080:8080 \
+	-p 50051:50051 \
 	--name myservice \
 	sudowing/service-engine:latest
 ```
