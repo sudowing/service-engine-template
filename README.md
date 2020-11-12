@@ -4,19 +4,22 @@ This project is a containerized implementation of [**`service-engine`**](https:/
 
 This project currently supports PostgreSQL, MySQL and Sqlite3. Support for all other database dialects supported by [knex.js](http://knexjs.org) is planned.
 
+
+![cms-schema source-data-tables](assets/img/readme/service-engine_art.png "CMS Schema | Tables based on .CSV Source Data")
+
+
 #  <a id="table-of-contents"></a>Table of Contents
 
-* [General Service Engine Template](general_service_engine_template)
-* [Application Configuration](application_configuration)
-    * [Required](required)
-    * [Optional](optional)
-* [Run by Docker](run_by_docker)
-* [Migrations](migrations)
-* [API Documentation](api_documentation)
-* [OpenAPI UI](open_api_ui)
-* [Static HTML Documentation](static_html_documentation)
-* [Versioning](versioning)
-* [License](license)
+* [Application Configuration](#application_configuration)
+    * [Required](#required)
+    * [Optional](#optional)
+* [Run by Docker](#run_by_docker)
+* [Migrations](#migrations)
+* [API Documentation](#api_documentation)
+* [OpenAPI UI](#open_api_ui)
+* [Static HTML Documentation](#static_html_documentation)
+* [Versioning](#versioning)
+* [License](#license)
 
 # <a id="application_configuration"></a> Application Configuration
 
@@ -58,9 +61,14 @@ docker run \
 The services should now be running:  
 [Health Check Route](http://localhost:8080/healthz)
 
+The services should now be running:  
+[GraphQL Playground](http://localhost:8080/service-engine-app/graphql/)  
+
 ##### **NOTE 1:** Docker run `--network` flag is only needed if you want ton connect to DB service via Docker Network.
 
 ##### **NOTE 2:** `DB_HOST` should be ip, domain or docker container name. If container name ensure db and this service on same network.
+
+##### **NOTE 3:** GraphQL Playground UI is only functional if ENV VAR **`NODE_ENV`** = `development`.
 
 # <a id="migrations"></a> Migrations
 
