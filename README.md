@@ -4,9 +4,7 @@ This project is a containerized implementation of [**`service-engine`**](https:/
 
 This project currently supports PostgreSQL, MySQL and Sqlite3. Support for all other database dialects supported by [knex.js](http://knexjs.org) is planned.
 
-
-![cms-schema source-data-tables](assets/img/readme/service-engine_art.png "CMS Schema | Tables based on .CSV Source Data")
-
+![service-envine promo-art](assets/img/readme/service-engine_art.png "Service-Engine | Promo Poster (GraphQL, gRPC & REST")
 
 #  <a id="table-of-contents"></a>Table of Contents
 
