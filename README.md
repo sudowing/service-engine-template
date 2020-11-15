@@ -105,7 +105,9 @@ The services should now be running:
 
 You can also generate some awesome static HTML documentation using [Mermade/shins](https://github.com/Mermade/shins). Tip: I always use the `--inline` flag.
 
-```
+**`Mermade/shins`** does not take the OpenAPI docs as input directly -- but rather a markdown format. You can generate this intermediate format using a related Mermade projects [Mermade/widdershins](https://github.com/Mermade/widdershins)
+```sh
+# use local node winddershins to generate intermediate md
 npx widdershins \
  --search true \
  --language_tabs 'javascript:JavaScript' 'javascript--nodejs:Node.JS' 'python:Python' 'go:Go' 'http:HTTP' 'ruby:Ruby' \
