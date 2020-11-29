@@ -63,6 +63,20 @@ docker run --rm -it \
 	sudowing/service-engine:1
 ```
 
+The services should now be running:  
+- [Health Check Route](http://localhost:8080/healthz)
+- [OpenAPI3 Definitions](http://localhost:8080/openapi)
+- [GraphQL Playground](http://localhost:8080/service-engine-app/graphql/)  
+
+Notes:
+
+- Docker run `--network` flag is only needed if you want ton connect to DB service via Docker Network.
+
+- `DB_HOST` should be ip, domain or docker container name. If container name ensure db and this service on same network.
+
+- GraphQL Playground UI is only functional if ENV VAR **`NODE_ENV`** = `development`.
+
+
 ## <a id="quick_start-custom_functionality"></a> Custom Functionality & Schema Migration Support
 
 Additional functionality can be configured by mounting any of the files below into the container. Each file can be enabled individually. 
@@ -75,8 +89,8 @@ docker network create mynetwork
 docker run --rm -it \
 	-v $(pwd)/src/metadata.json:/app/lib/metadata.json \
 	-v $(pwd)/src/middleware.js:/app/lib/middleware.js \
-	-v $(pwd)/src/permissions.js:/app/lib/permissions.js \
 	-v $(pwd)/src/complex_resources.js:/app/lib/complex_resources.js \
+	-v $(pwd)/src/permissions.js:/app/lib/permissions.js \	
 	-v $(pwd)/migrations:/app/migrations \
 	--network mynetwork \
 	--env-file ./.env \
@@ -91,15 +105,11 @@ The services should now be running:
 - [OpenAPI3 Definitions](http://localhost:8080/openapi)
 - [GraphQL Playground](http://localhost:8080/service-engine-app/graphql/)  
 
-##### **NOTE 1:** Docker run `--network` flag is only needed if you want ton connect to DB service via Docker Network.
-
-##### **NOTE 2:** `DB_HOST` should be ip, domain or docker container name. If container name ensure db and this service on same network.
-
-##### **NOTE 3:** GraphQL Playground UI is only functional if ENV VAR **`NODE_ENV`** = `development`.
-
 # <a id="schema_migrations"></a> Schema Migrations
 
-Knex is used for db migrations. All functionality provided by knex is supported -- along with some project specific features which support more modular schema migrations via batches of SQL files held within specific directories.
+Knex is used for database schema migrations.
+
+All functionality provided by knex is supported -- along with some project specific features which support more modular schema migrations via batches of SQL files held within specific directories.
 
 ## <a id="schema_migrations-basic"></a> Basic Schema Migrations via knex.js
 
@@ -172,7 +182,7 @@ This is really helpful for documenting the `REST` calls, but you will have to bu
 
 You can also generate some awesome static HTML documentation using [Mermade/shins](https://github.com/Mermade/shins). Tip: I always use the `--inline` flag when generating the shin docs.
 
-**`Mermade/shins`** does not take the OpenAPI docs as input directly -- but rather a markdown format. You can generate this intermediate format using a related Mermade projects [Mermade/widdershins](https://github.com/Mermade/widdershins)
+**`Mermade/shins`** does not take the OpenAPI docs as input directly -- but rather a markdown format. You can generate this intermediate format using a related Mermade project [widdershins](https://github.com/Mermade/widdershins)
 ```sh
 # use local node winddershins to generate intermediate md
 npx widdershins \
@@ -182,7 +192,9 @@ npx widdershins \
  -o docs/service.md
 ```	
 
-##### **NOTE 1:** You will need node installed locally to use `npx`
+Notes:
+- You will need node installed locally to use `npx`
+- [shins](https://github.com/Mermade/shins) has been replaced by [reslate](https://github.com/Mermade/reslate). Support for building out static HTML with `reslate` will be added in the future (likely via Docker container).
 
 # <a id="versioning"></a> Versioning
 
