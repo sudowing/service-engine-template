@@ -133,7 +133,7 @@ docker run ...options sudowing/service-engine:1 \
 
 ## <a id="schema_migrations-modular"></a> Modular Schema Migration Scripts
 
-- [**Documentation from NPM Package**](https://github.com/sudowing/service-engine-docker#schema_migrations-modular)
+- [**Documentation from NPM Package**](https://github.com/sudowing/service-engine-docker#modular-schema-migration-scripts)
 
 ```sh
 # create modular knex schema migration script
