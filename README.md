@@ -11,7 +11,7 @@ This project currently supports PostgreSQL, MySQL and Sqlite3. Support for all o
     * [Required](#required)
     * [Optional](#optional)
 * [Quick Start](#quick_start)
-    * [Minimul Setup](#quick_start-minimal_setup)
+    * [Basic Features](#quick_start-basic_features)
     * [Custom Functionality & Schema Migration Support](#quick_start-custom_functionality)
 * [Migrations](#migrations)
 * [API Documentation](#api_documentation)
@@ -43,7 +43,7 @@ The remaining files are all optional. Detailed descriptions of what each is for 
 
 # <a id="quick_start"></a> Quick Start
 
-## <a id="quick_start-minimal_setup"></a> Minimul Setup
+## <a id="quick_start-basic_features"></a> Basic Features
 
 Once database configurations are set in a `.env` file, you can run the application via a Docker container. The resources provisioned for `REST`, `GraphQL` & `gRPC` are fully derived from the database. 
 
