@@ -7,15 +7,17 @@ This project currently supports PostgreSQL, MySQL and Sqlite3. Support for all o
 ![service-envine promo-art](assets/img/readme/service-engine_art.png "Service-Engine | Promo Poster (GraphQL, gRPC & REST")
 
 #  <a id="table-of-contents"></a>Table of Contents
-
 * [Application Configuration](#application_configuration)
     * [Required](#required)
     * [Optional](#optional)
-* [Run by Docker](#run_by_docker)
+* [Quick Start](#quick_start)
+    * [Minimul Setup](#quick_start-minimal_setup)
+    * [Custom Functionality & Schema Migration Support](#quick_start-custom_functionality)
 * [Migrations](#migrations)
 * [API Documentation](#api_documentation)
-* [OpenAPI UI](#open_api_ui)
-* [Static HTML Documentation](#static_html_documentation)
+    * [OpenAPI UI](#api_documentation-open_api_ui)
+    * [OpenAPI Import](#api_documentation-insomnia_openapi_import)
+    * [Static HTML Documentation](#api_documentation-static_html_documentation)
 * [Versioning](#versioning)
 * [License](#license)
 
@@ -42,6 +44,9 @@ The remaining files are all optional. Detailed descriptions of what each is for 
 # <a id="quick_start"></a> Quick Start
 
 ## <a id="quick_start-minimal_setup"></a> Minimul Setup
+
+Once database configurations are set in a `.env` file, you can run the application via a Docker container. The resources provisioned for `REST`, `GraphQL` & `gRPC` are fully derived from the database. 
+
 ```sh
 # create docker network (if db on docker network)
 docker network create mynetwork
@@ -57,6 +62,9 @@ docker run --rm -it \
 ```
 
 ## <a id="quick_start-custom_functionality"></a> Custom Functionality & Schema Migration Support
+
+Additional functionality can be configured by mounting any of the files below into the container. Each file can be enabled individually. 
+
 ```sh
 # create docker network (if db on docker network)
 docker network create mynetwork
@@ -140,25 +148,25 @@ The service has a two sets of resources -- some [static development resources](h
 
 I use the [`Insomnia API Client`](insomnia.rest) for develoment, and I've included an [insomnia workplace export](./docs/insomnia.service.json) of some general service calls to speed your adoption.
 
-## <a id="api_documentation-openapi_import"></a> OpenAPI Import
-
-Insomnia has a feature that supports [importing OpenAPI definitions](https://support.insomnia.rest/article/52-importing-and-exporting-data) and because the `REST` service auto-generates OpenAPI3 definitions. This means you can actually use the service to build calls in the insomnia workplace.
-
-This is really helpful for documenting the `REST` calls, but you will have to build `GraphQL` calls out manually.
-
-# <a id="open_api_ui"></a> OpenAPI UI
+## <a id="api_documentation-open_api_ui"></a> OpenAPI UI
 
 The OpenAPI UI is available via [Docker Container](https://hub.docker.com/r/swaggerapi/swagger-ui/) and the command below will run that container and populate it with the `OpenAPI definition` generated from this server.
 
-```
+```sh
 docker run -p 8088:8080 -e API_URL='http://localhost:8080/openapi' swaggerapi/swagger-ui
 ```
 
 The services should now be running:  
 [OpenAPI Web UI](http://localhost:8088)
 
+## <a id="api_documentation-insomnia_openapi_import"></a> OpenAPI Import
 
-# <a id="static_html_documentation"></a> Static HTML Documentation
+Insomnia has a feature that supports [importing OpenAPI definitions](https://support.insomnia.rest/article/52-importing-and-exporting-data) and because the `REST` service auto-generates OpenAPI3 definitions. This means you can actually use the service to build calls in the insomnia workplace.
+
+This is really helpful for documenting the `REST` calls, but you will have to build `GraphQL` calls out manually.
+
+
+## <a id="api_documentation-static_html_documentation"></a> Static HTML Documentation
 
 You can also generate some awesome static HTML documentation using [Mermade/shins](https://github.com/Mermade/shins). Tip: I always use the `--inline` flag when generating the shin docs.
 
