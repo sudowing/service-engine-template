@@ -39,15 +39,14 @@ The remaining files are all optional. Detailed descriptions of what each is for 
 - [`complex_resources.js`](https://github.com/sudowing/service-engine/blob/develop/README.md#application-configurations_complex-resources-subqueries)
 - [`permissions.js`](https://github.com/sudowing/service-engine/blob/develop/README.md#application-configurations_permissions)
 
-# <a id="run_by_docker"></a> Run by Docker
+# <a id="quick_start"></a> Quick Start
 
+## <a id="quick_start-minimal_setup"></a> Minimul Setup
 ```sh
 # create docker network (if db on docker network)
 docker network create mynetwork
-```
 
-```sh
-# ppp
+# run via docker container
 docker run --rm -it \
 	--network mynetwork \
 	--env-file ./.env \
@@ -57,9 +56,12 @@ docker run --rm -it \
 	sudowing/service-engine:1
 ```
 
-
+## <a id="quick_start-custom_functionality"></a> Custom Functionality & Schema Migration Support
 ```sh
-# ppp
+# create docker network (if db on docker network)
+docker network create mynetwork
+
+# run via docker container
 docker run --rm -it \
 	-v $(pwd)/src/metadata.json:/app/lib/metadata.json \
 	-v $(pwd)/src/middleware.js:/app/lib/middleware.js \
@@ -74,7 +76,6 @@ docker run --rm -it \
 	sudowing/service-engine:1
 ```
 
-
 The services should now be running:  
 - [Health Check Route](http://localhost:8080/healthz)
 - [OpenAPI3 Definitions](http://localhost:8080/openapi)
@@ -86,15 +87,52 @@ The services should now be running:
 
 ##### **NOTE 3:** GraphQL Playground UI is only functional if ENV VAR **`NODE_ENV`** = `development`.
 
-# <a id="migrations"></a> Migrations
+# <a id="schema_migrations"></a> Schema Migrations
 
-Knex is used for db migrations. Instead of exposing all the knex migration interfaces, migrations are added by placing new migration files into the `migrations` directory.
+Knex is used for db migrations. All functionality provided by knex is supported -- along with some project specific features which support more modular schema migrations via batches of SQL files held within specific directories.
 
-Simply copy/paste `migrations/knex.stub.template` to `migrations/YYYYMMDDHHMMSS_some_migration_name.js` and add the migration steps to the `exports.up` & `exports.down` functions (exactly as you would with knex).
+## <a id="schema_migrations-basic"></a> Basic Schema Migrations via knex.js
 
-The migrations will be run on server start.
+[**Documentation from NPM Package**](https://github.com/sudowing/service-engine-docker#basic-schema-migrations)
 
-**NOTE 1:** Migration support is now toggled via an ENV VAR `MIGRATIONS`. Will be enabled unless set to string of value `false`
+```sh
+# knex schema migration support via redefining Docker CMDs
+docker run --rm \
+	--env-file ./.env \
+	-v $(pwd)/migrations:/app/migrations \
+	sudowing/service-engine:1 \
+	npm run migrate:make some_script_name
+
+# ANY/ALL OF THE BELOW LINES ARE SUPPORTED
+docker run ...options sudowing/service-engine:1 \
+	# create new knex migration script
+	npm run migrate:make some_script_name
+	# run all pending migration scripts
+	npm run migrate:latest
+	# rollback all migration scripts committing in last batch
+	npm run migrate:rollback
+	# rollback all migration scripts
+	npm run migrate:rollback-all
+	# run next pending migration script
+	npm run migrate:up
+	# uncommit last committed migration script
+	npm run migrate:down
+	# list all migration script along with commitment status
+	npm run migrate:list
+```
+
+## <a id="schema_migrations-modular"></a> Modular Schema Migration Scripts
+
+- [**Documentation from NPM Package**](https://github.com/sudowing/service-engine-docker#modular-schema-migration-scripts)
+
+```sh
+# create modular knex schema migration script
+docker run --rm \
+	--env-file ./.env \
+	-v $(pwd)/migrations:/app/migrations \
+	sudowing/service-engine:1 \
+	npm run migrate:new hello world
+```
 
 # <a id="api_documentation"></a> API Documentation
 
@@ -122,7 +160,7 @@ The services should now be running:
 
 # <a id="static_html_documentation"></a> Static HTML Documentation
 
-You can also generate some awesome static HTML documentation using [Mermade/shins](https://github.com/Mermade/shins). Tip: I always use the `--inline` flag.
+You can also generate some awesome static HTML documentation using [Mermade/shins](https://github.com/Mermade/shins). Tip: I always use the `--inline` flag when generating the shin docs.
 
 **`Mermade/shins`** does not take the OpenAPI docs as input directly -- but rather a markdown format. You can generate this intermediate format using a related Mermade projects [Mermade/widdershins](https://github.com/Mermade/widdershins)
 ```sh
