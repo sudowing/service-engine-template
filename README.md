@@ -7,15 +7,19 @@ This project currently supports PostgreSQL, MySQL and Sqlite3. Support for all o
 ![service-envine promo-art](assets/img/readme/service-engine_art.png "Service-Engine | Promo Poster (GraphQL, gRPC & REST")
 
 #  <a id="table-of-contents"></a>Table of Contents
-
 * [Application Configuration](#application_configuration)
     * [Required](#required)
     * [Optional](#optional)
-* [Run by Docker](#run_by_docker)
-* [Migrations](#migrations)
+* [Quick Start](#quick_start)
+    * [Basic Features](#quick_start-basic_features)
+    * [Custom Functionality & Schema Migration Support](#quick_start-custom_functionality)
+* [Schema Migrations](#schema_migrations)
+    * [Basic Schema Migrations via knex.js](#schema_migrations-basic)
+    * [Modular Schema Migration Scripts](#schema_migrations-modular)
 * [API Documentation](#api_documentation)
-* [OpenAPI UI](#open_api_ui)
-* [Static HTML Documentation](#static_html_documentation)
+    * [OpenAPI UI](#api_documentation-open_api_ui)
+    * [OpenAPI Import](#api_documentation-insomnia_openapi_import)
+    * [Static HTML Documentation](#api_documentation-static_html_documentation)
 * [Versioning](#versioning)
 * [License](#license)
 
@@ -39,23 +43,49 @@ The remaining files are all optional. Detailed descriptions of what each is for 
 - [`complex_resources.js`](https://github.com/sudowing/service-engine/blob/develop/README.md#application-configurations_complex-resources-subqueries)
 - [`permissions.js`](https://github.com/sudowing/service-engine/blob/develop/README.md#application-configurations_permissions)
 
-# <a id="run_by_docker"></a> Run by Docker
+# <a id="quick_start"></a> Quick Start
+
+## <a id="quick_start-basic_features"></a> Basic Features
+
+Once database configurations are set in a `.env` file, you can run the application via a Docker container. The resources provisioned for `REST`, `GraphQL` & `gRPC` are fully derived from the database. 
 
 ```sh
-docker run \
-	--rm -it \
+# create docker network (if db on docker network)
+docker network create mynetwork
+
+# run via docker container
+docker run --rm -it \
+	--network mynetwork \
 	--env-file ./.env \
+	-p 8080:8080 \
+	-p 50051:50051 \
+	--name myservice \
+	sudowing/service-engine:1
+```
+
+## <a id="quick_start-custom_functionality"></a> Custom Functionality & Schema Migration Support
+
+Additional functionality can be configured by mounting any of the files below into the container. Each file can be enabled individually. 
+
+```sh
+# create docker network (if db on docker network)
+docker network create mynetwork
+
+# run via docker container
+docker run --rm -it \
 	-v $(pwd)/src/metadata.json:/app/lib/metadata.json \
 	-v $(pwd)/src/middleware.js:/app/lib/middleware.js \
 	-v $(pwd)/src/permissions.js:/app/lib/permissions.js \
 	-v $(pwd)/src/complex_resources.js:/app/lib/complex_resources.js \
 	-v $(pwd)/migrations:/app/migrations \
 	--network mynetwork \
+	--env-file ./.env \
 	-p 8080:8080 \
 	-p 50051:50051 \
 	--name myservice \
-	sudowing/service-engine:latest
+	sudowing/service-engine:1
 ```
+
 The services should now be running:  
 - [Health Check Route](http://localhost:8080/healthz)
 - [OpenAPI3 Definitions](http://localhost:8080/openapi)
@@ -67,15 +97,52 @@ The services should now be running:
 
 ##### **NOTE 3:** GraphQL Playground UI is only functional if ENV VAR **`NODE_ENV`** = `development`.
 
-# <a id="migrations"></a> Migrations
+# <a id="schema_migrations"></a> Schema Migrations
 
-Knex is used for db migrations. Instead of exposing all the knex migration interfaces, migrations are added by placing new migration files into the `migrations` directory.
+Knex is used for db migrations. All functionality provided by knex is supported -- along with some project specific features which support more modular schema migrations via batches of SQL files held within specific directories.
 
-Simply copy/paste `migrations/knex.stub.template` to `migrations/YYYYMMDDHHMMSS_some_migration_name.js` and add the migration steps to the `exports.up` & `exports.down` functions (exactly as you would with knex).
+## <a id="schema_migrations-basic"></a> Basic Schema Migrations via knex.js
 
-The migrations will be run on server start.
+[**Documentation from NPM Package**](https://github.com/sudowing/service-engine-docker#basic-schema-migrations)
 
-**NOTE 1:** Migration support is now toggled via an ENV VAR `MIGRATIONS`. Will be enabled unless set to string of value `false`
+```sh
+# knex schema migration support via redefining Docker CMDs
+docker run --rm \
+	--env-file ./.env \
+	-v $(pwd)/migrations:/app/migrations \
+	sudowing/service-engine:1 \
+	npm run migrate:make some_script_name
+
+# ANY/ALL OF THE BELOW LINES ARE SUPPORTED
+docker run ...options sudowing/service-engine:1 \
+	# create new knex migration script
+	npm run migrate:make some_script_name
+	# run all pending migration scripts
+	npm run migrate:latest
+	# rollback all migration scripts committing in last batch
+	npm run migrate:rollback
+	# rollback all migration scripts
+	npm run migrate:rollback-all
+	# run next pending migration script
+	npm run migrate:up
+	# uncommit last committed migration script
+	npm run migrate:down
+	# list all migration script along with commitment status
+	npm run migrate:list
+```
+
+## <a id="schema_migrations-modular"></a> Modular Schema Migration Scripts
+
+- [**Documentation from NPM Package**](https://github.com/sudowing/service-engine-docker#modular-schema-migration-scripts)
+
+```sh
+# create modular knex schema migration script
+docker run --rm \
+	--env-file ./.env \
+	-v $(pwd)/migrations:/app/migrations \
+	sudowing/service-engine:1 \
+	npm run migrate:new hello world
+```
 
 # <a id="api_documentation"></a> API Documentation
 
@@ -83,27 +150,27 @@ The service has a two sets of resources -- some [static development resources](h
 
 I use the [`Insomnia API Client`](insomnia.rest) for develoment, and I've included an [insomnia workplace export](./docs/insomnia.service.json) of some general service calls to speed your adoption.
 
-## <a id="api_documentation-openapi_import"></a> OpenAPI Import
-
-Insomnia has a feature that supports [importing OpenAPI definitions](https://support.insomnia.rest/article/52-importing-and-exporting-data) and because the `REST` service auto-generates OpenAPI3 definitions. This means you can actually use the service to build calls in the insomnia workplace.
-
-This is really helpful for documenting the `REST` calls, but you will have to build `GraphQL` calls out manually.
-
-# <a id="open_api_ui"></a> OpenAPI UI
+## <a id="api_documentation-open_api_ui"></a> OpenAPI UI
 
 The OpenAPI UI is available via [Docker Container](https://hub.docker.com/r/swaggerapi/swagger-ui/) and the command below will run that container and populate it with the `OpenAPI definition` generated from this server.
 
-```
-docker run -p 8088:8080 -e API_URL='http://0.0.0.0:8080/openapi' swaggerapi/swagger-ui
+```sh
+docker run -p 8088:8080 -e API_URL='http://localhost:8080/openapi' swaggerapi/swagger-ui
 ```
 
 The services should now be running:  
 [OpenAPI Web UI](http://localhost:8088)
 
+## <a id="api_documentation-insomnia_openapi_import"></a> OpenAPI Import
 
-# <a id="static_html_documentation"></a> Static HTML Documentation
+Insomnia has a feature that supports [importing OpenAPI definitions](https://support.insomnia.rest/article/52-importing-and-exporting-data) and because the `REST` service auto-generates OpenAPI3 definitions. This means you can actually use the service to build calls in the insomnia workplace.
 
-You can also generate some awesome static HTML documentation using [Mermade/shins](https://github.com/Mermade/shins). Tip: I always use the `--inline` flag.
+This is really helpful for documenting the `REST` calls, but you will have to build `GraphQL` calls out manually.
+
+
+## <a id="api_documentation-static_html_documentation"></a> Static HTML Documentation
+
+You can also generate some awesome static HTML documentation using [Mermade/shins](https://github.com/Mermade/shins). Tip: I always use the `--inline` flag when generating the shin docs.
 
 **`Mermade/shins`** does not take the OpenAPI docs as input directly -- but rather a markdown format. You can generate this intermediate format using a related Mermade projects [Mermade/widdershins](https://github.com/Mermade/widdershins)
 ```sh
@@ -111,7 +178,7 @@ You can also generate some awesome static HTML documentation using [Mermade/shin
 npx widdershins \
  --search true \
  --language_tabs 'javascript:JavaScript' 'javascript--nodejs:Node.JS' 'python:Python' 'go:Go' 'http:HTTP' 'ruby:Ruby' \
- --summary http://0.0.0.0:8080/openapi \
+ --summary http://localhost:8080/openapi \
  -o docs/service.md
 ```	
 
@@ -124,3 +191,7 @@ npx widdershins \
 # <a id="license"></a> License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+
+
+
