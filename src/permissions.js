@@ -1,6 +1,6 @@
 const { permit } = require('service-engine'); // exists within container scope
 
-const systemPermissions = permit().crud();
+const systemPermissions = permit().read();
 
 const resourcePermissions = {
 //   'public.some_table': permit().create().read().update().delete(),
@@ -8,7 +8,6 @@ const resourcePermissions = {
 //   'some_schema.some_mat_view': permit().read(),
 //   // sqlite3 has no schemas
 //   'some_table': permit().create().read().update().delete(),
-//   'some_view_name': permit().read(),
-}
+};
 
 module.exports = { systemPermissions, resourcePermissions };
