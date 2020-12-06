@@ -42,6 +42,9 @@ The remaining files are all optional. Detailed descriptions of what each is for 
 - [`middleware.js`](https://github.com/sudowing/service-engine/blob/develop/README.md#application-configurations_middleware)
 - [`complex_resources.js`](https://github.com/sudowing/service-engine/blob/develop/README.md#application-configurations_complex-resources-subqueries)
 - [`permissions.js`](https://github.com/sudowing/service-engine/blob/develop/README.md#application-configurations_permissions)
+- [`redactions.js`](https://github.com/sudowing/service-engine#application-configurations_redacted_fields)
+
+
 
 # <a id="quick_start"></a> Quick Start
 
@@ -86,14 +89,15 @@ Additional functionality can be configured by mounting any of the files below in
 docker network create mynetwork
 
 # run via docker container
-docker run --rm -it \
-	-v $(pwd)/src/metadata.json:/app/lib/metadata.json \
-	-v $(pwd)/src/middleware.js:/app/lib/middleware.js \
-	-v $(pwd)/src/complex_resources.js:/app/lib/complex_resources.js \
-	-v $(pwd)/src/permissions.js:/app/lib/permissions.js \	
-	-v $(pwd)/migrations:/app/migrations \
+docker run --rm -d \
 	--network mynetwork \
 	--env-file ./.env \
+	-v $(pwd)/src/metadata.json:/app/lib/metadata.json \
+	-v $(pwd)/src/permissions.js:/app/lib/permissions.js \
+	-v $(pwd)/src/middleware.js:/app/lib/middleware.js \
+	-v $(pwd)/src/redactions.js:/app/lib/redactions.js \
+	-v $(pwd)/src/complex_resources.js:/app/lib/complex_resources.js \
+	-v $(pwd)/migrations:/app/migrations \
 	-p 8080:8080 \
 	-p 50051:50051 \
 	--name myservice \

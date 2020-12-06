@@ -5,7 +5,7 @@
     "termsOfService": "http://website.io/terms/",
     "name": "Joe Wingard",
     "email": "open-source@joewingard.com",
-    "url": "https://github.com/sudowing/service-engine",
+    "url": "https://github.com/sudowing/service-engine-docker.git",
     "servers": [
         "https://dev.domain.com",
         "https://qa.domain.com",
