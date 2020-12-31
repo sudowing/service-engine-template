@@ -20,6 +20,7 @@ This project currently supports PostgreSQL, MySQL and Sqlite3. Support for all o
     * [OpenAPI UI](#api_documentation-open_api_ui)
     * [OpenAPI Import](#api_documentation-insomnia_openapi_import)
     * [Static HTML Documentation](#api_documentation-static_html_documentation)
+* [Setup & Feature Video Walkthrough](#video-walkthrough-setup-and-features)
 * [Versioning](#versioning)
 * [License](#license)
 
@@ -199,6 +200,27 @@ npx widdershins \
 Notes:
 - You will need node installed locally to use `npx`
 - [shins](https://github.com/Mermade/shins) has been replaced by [reslate](https://github.com/Mermade/reslate). Support for building out static HTML with `reslate` will be added in the future (likely via Docker container).
+
+# <a id="video-walkthrough-setup-and-features"></a>Setup & Feature Video Walkthrough
+
+A series of videos, showing how to configure the application and how several features work, have been published as a [playlist on YouTube](https://www.youtube.com/playlist?list=PLxiODQNSQfKOVmNZ1ZPXbPh6LeVDWtDRc).
+
+Videos have been produced covering the following topics related to setup & Features:
+- [GIS DB Setup & Load](https://youtu.be/UjvvPgdT_Y8)
+- [Quick Start](https://youtu.be/zwpPLM5LPgo)
+- [Insomnia Import](https://youtu.be/PzV19iHs-IU)
+- [Key REST Endpoints](https://youtu.be/sfmAO4pWC14)
+- [Permissions](https://youtu.be/4ptSSnaqvqw)
+- [API Response Metadata](https://youtu.be/fjuTBT08ELE)
+- [Query Context](https://youtu.be/wITo_oHjSvM)
+- [SQL Operators](https://youtu.be/698lXrclFIs)
+- [CRUD Operations](https://youtu.be/KUDqqlxb26M)
+- [Debug Mode](https://youtu.be/LjRpv6JZxhI)
+- [Complex Resources (subqueries & aggregate queries)](https://youtu.be/rzhQlPAoVeI)
+- [Middleware & Redactions](https://youtu.be/AopYx2XM3yc)
+- [GraphQL Playground and Geoqueries](https://youtu.be/8y5BMjHVRUA)
+- [gRPC Service (CRUD & Geoqueries)](https://youtu.be/HFzwwLIqrfQ)
+- [DB Schema Migrations](https://youtu.be/84D8_--K5cs)
 
 # <a id="versioning"></a> Versioning
 
