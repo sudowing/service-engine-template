@@ -1,6 +1,6 @@
 const { permit } = require('service-engine'); // exists within container scope
 
-const systemPermissions = permit().read();
+const systemPermissions = permit().crud();
 
 const resourcePermissions = {
 //   'public.some_table': permit().create().read().update().delete(),
