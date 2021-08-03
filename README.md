@@ -58,19 +58,19 @@ Once database configurations are set in a `.env` file, you can run the applicati
 docker network create mynetwork
 
 # run via docker container
-docker run --rm -it \
+docker run --rm -d \
 	--network mynetwork \
 	--env-file ./.env \
 	-p 8080:8080 \
 	-p 50051:50051 \
 	--name myservice \
-	sudowing/service-engine:1
+	sudowing/service-engine:latest
 ```
 
 The services should now be running:  
 - [Health Check Route](http://localhost:8080/healthz)
 - [OpenAPI3 Definitions](http://localhost:8080/openapi)
-- [GraphQL Playground](http://localhost:8080/service-engine-app/graphql/)  
+- [GraphQL Playground](http://localhost:8080/some-app-service/graphql/)  
 
 Notes:
 
@@ -108,7 +108,7 @@ docker run --rm -d \
 The services should now be running:  
 - [Health Check Route](http://localhost:8080/healthz)
 - [OpenAPI3 Definitions](http://localhost:8080/openapi)
-- [GraphQL Playground](http://localhost:8080/service-engine-app/graphql/)  
+- [GraphQL Playground](http://localhost:8080/some-app-service/graphql/)  
 
 # <a id="schema_migrations"></a> Schema Migrations
 
