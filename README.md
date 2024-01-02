@@ -2,7 +2,7 @@
 
 This project is a containerized implementation of [**`service-engine`**](https://www.npmjs.com/package/service-engine). The goal is to provide a minimalist template that can be used to quickly bootstap services.
 
-This project currently supports PostgreSQL, MySQL, MSSQL (SQL-Server), Sqlite3 & Redshift. Support for all other database dialects supported by [knex.js](http://knexjs.org) is planned.
+This project currently supports PostgreSQL, MySQL, MSSQL (SQL-Server), Sqlite3, Oracle & Redshift. Support for all other database dialects supported by [knex.js](http://knexjs.org) is planned.
 
 ![service-envine promo-art](assets/img/readme/service-engine_art.png "Service-Engine | Promo Poster (GraphQL, gRPC & REST")
 
